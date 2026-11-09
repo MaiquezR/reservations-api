@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 
+import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'reservas',
+    'reservations',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +77,12 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('PG_DB', 'reservations'),
+        'USER': os.environ.get('PG_USER', 'postgres'),
+        'PASSWORD': os.environ.get('PG_PASSWORD', 'postgresSQL123'),
+        'HOST': os.environ.get('PG_HOST', 'localhost'),
+        'PORT': os.environ.get('PG_PORT', '5432'),
     }
 }
 
@@ -125,4 +131,12 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+SIMPLE_JWT = {
+        'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+        'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+        'ROTATE_REFRESH_TOKENS': True,
+        'BLACKLIST_AFTER_ROTATION': True,
+        'AUTH_HEADER_TYPES': ('Bearer',),
 }

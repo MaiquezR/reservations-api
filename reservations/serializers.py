@@ -1,5 +1,6 @@
-from .models import Resource, Reservation
 from rest_framework import serializers
+
+from .models import Reservation, Resource
 
 
 class ResourceSerializer(serializers.ModelSerializer):
